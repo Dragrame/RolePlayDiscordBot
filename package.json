@@ -1,0 +1,23 @@
+{
+  "name": "discord-bot",
+  "version": "0.0.1",
+  "description": "A small discord bot to do role plays",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^11.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Niestsabes/DiscordBot.git"
+  },
+  "author": "Neitsabes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Niestsabes/DiscordBot/issues"
+  },
+  "homepage": "https://github.com/Niestsabes/DiscordBot#readme"
+}
