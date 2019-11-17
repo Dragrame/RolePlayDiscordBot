@@ -25,19 +25,20 @@ exports.Command = Command = class Command {
     findMatch(typedQuery) {
         // End if there's no query
         if (typedQuery.length === 0) return null;
-        const headElement = typedQuery.shift();
 
         // React if the first element is a command matching with this command's name
         if (
-            headElement.type === QueryModule.QueryType.COMMAND
-            && headElement.body === this._name
+            typedQuery[0].type === QueryModule.QueryType.COMMAND
+            && typedQuery[0].body === this._name
         ) {
             // Check for a match in child commands
             let childMatch = null;
             for (const childCommand of this._childCommands) {
-                childMatch = childCommand.findMatch(typedQuery);
+                childMatch = childCommand.findMatch(
+                    typedQuery.slice(1, typedQuery.length)
+                );
                 // If there is a match, return it
-                if (childMatch) return childMatch;
+                if (childMatch !== null) return childMatch;
             }
             // Else, return this command
             return this;
