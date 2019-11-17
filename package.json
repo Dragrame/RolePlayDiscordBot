@@ -1,5 +1,6 @@
 {
   "name": "discord-bot",
+  "prefix": ".rp",
   "version": "0.0.1",
   "description": "A small discord bot to do role plays",
   "main": "index.js",

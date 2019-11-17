@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const config = require('./config/config.json');
+const config = require('./package.json');
 const { token } = require('./config/config.private.json');
 
 const QueryModule = require('./src/util/Query');
@@ -20,7 +20,7 @@ client.on('message', msg => {
 
     const c = new QueryModule.Query(msg.content);
 
-    console.log(bot.findMatch(c.typedQuery));
+    console.log(bot.findMatch(msg, c.typedQuery));
 });
 
 client.login(token);
