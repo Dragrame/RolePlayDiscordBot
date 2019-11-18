@@ -20,7 +20,7 @@ client.on('message', msg => {
 
     const c = new QueryModule.Query(msg.content);
 
-    console.log(bot.findMatch(msg, c.typedQuery));
+    bot.findMatch(msg, c.typedQuery);
 });
 
 client.login(token);

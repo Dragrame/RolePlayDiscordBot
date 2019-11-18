@@ -9,7 +9,8 @@ exports.Command = Command = class Command {
         this._name = name;
         this._prefix = prefix;
         this._description = null;
-        this._action = function(msg){};
+        this._wiki = null;
+        this._action = function(msg, query){};
         this._childCommands = [];
     }
 
@@ -41,7 +42,7 @@ exports.Command = Command = class Command {
             
             // If the subquery is empty, perform this action
             if (subQuery.length === 0) {
-                this._action(msg, typedQuery);
+                this.fetchAction(msg, subQuery, () => this.fetchHelp(msg, parentElements));
                 return this;
             }
 
@@ -50,7 +51,7 @@ exports.Command = Command = class Command {
                 subQuery[0].type === QueryModule.QueryType.COMMAND
                 && subQuery[0].body === "help"
             ) {
-                this.fetchHelp(msg);
+                this.fetchHelp(msg, parentElements);
                 return this;
             }
             
@@ -60,11 +61,14 @@ exports.Command = Command = class Command {
                 childMatch = childCommand.findMatch(
                     msg,
                     typedQuery.slice(1, typedQuery.length),
-                    parentElements.push(typedQuery[0])
+                    parentElements.concat(typedQuery[0])
                 );
                 // If there is a match, return it
                 if (childMatch !== null) return childMatch;
             }
+
+            // Try to execute this action
+            return this.fetchAction(msg, subQuery, () => this.fetchHelp(msg, parentElements));
         }
         // End if there's no match
         else return null;
@@ -85,14 +89,31 @@ exports.Command = Command = class Command {
         });
         parentQuery += this._prefix;
 
-        // Construct the help reply
+        // Construct the help reply with child commands
         let reply = `**${this._name}** : ${this._description}\n`;
         this._childCommands.forEach( command => {
             reply += `${command.name} : `
             reply += `${"`"}${parentQuery} ${command.prefix}${"`"} - ${command.description}\n`
         });
 
+        // Construct the help reply with parameters
+        if (this._wiki) reply += this._wiki(parentQuery) + "\n";
+
         if (reply !== '') msg.channel.send(reply);
+    }
+
+    /**
+     * Perform the command action. If it fails, display help.
+     * @param {string} msg
+     * @param {QueryModule.QueryElement[]} subQuery
+     * @param {Function} failCallback
+     */
+    fetchAction(msg, subQuery, failCallback) {
+        try {
+            this._action(msg, subQuery);
+        } catch (e) {
+            failCallback();
+        }
     }
 
     /**
@@ -118,11 +139,9 @@ exports.Command = Command = class Command {
 
     /**
      * @param {Function}
-     * @returns {Command}
      */
     set action(value) {
         this._action = value;
-        return this;
     }
 
     /**
@@ -134,11 +153,22 @@ exports.Command = Command = class Command {
 
     /**
      * @param {string}
-     * @returns {Command}
      */
     set description(value) {
         this._description = value;
-        return this;
     }
 
+    /**
+     * @returns {Function}
+     */
+    get wiki() {
+        return this._wiki;
+    }
+
+    /**
+     * @param {Function}
+     */
+    set wiki(value) {
+        this._wiki = value;
+    }
 }
