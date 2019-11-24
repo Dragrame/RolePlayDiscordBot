@@ -5,7 +5,8 @@
   "description": "A small discord bot to do role plays",
   "main": "index.js",
   "dependencies": {
-    "discord.js": "^11.5.1"
+    "discord.js": "^11.5.1",
+    "mongodb": "^3.3.4"
   },
   "devDependencies": {},
   "scripts": {

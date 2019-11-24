@@ -12,4 +12,4 @@ bot.action = function(msg) {
 // Add all command modules to the main bot command
 bot.addChildCommand(require('./modules/dice-roller'));
 bot.addChildCommand(require('./modules/time-keeper'));
-bot.addChildCommand(require('./modules/vote'));
+// bot.addChildCommand(require('./modules/vote'));

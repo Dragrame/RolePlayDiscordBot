@@ -16,7 +16,7 @@ client.on('message', msg => {
     // Ignore message if its not stating with prefix (avoid spam)
     if (!msg.content.startsWith(config.prefix)) return;
     // Ignore message if its from another bot (avoid bot messaging loops)
-    if (msg.member.user.bot) return;
+    // if (msg.user.bot) return;
 
     const c = new QueryModule.Query(msg.content);
 
